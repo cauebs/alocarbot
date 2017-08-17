@@ -20,6 +20,7 @@ for handler in [CommandHandler('start', callbacks.start),
                 CommandHandler('aulas', callbacks.all_classes),
                 CommandHandler('hoje', callbacks.classes_today),
                 CommandHandler('amanha', callbacks.classes_tomorrow),
+                CommandHandler('help', callbacks.show_help),
                 MessageHandler(Filters.text, callbacks.handle_message)]:
     updater.dispatcher.add_handler(handler)
 

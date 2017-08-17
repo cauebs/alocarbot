@@ -31,7 +31,7 @@ def handle_message(bot, update):
         show_classes(bot, update, period='tomorrow')
 
     elif command == 'help':
-        update.message.reply_text(strings.HELP)
+        show_help(bot, update)
 
     elif text.isdigit() and len(text) in (7, 8):
         db = dataset.connect('sqlite:///users.db')
@@ -93,3 +93,7 @@ def classes_today(bot, update):
 
 def classes_tomorrow(bot, update):
     return show_classes(bot, update, period='tomorrow')
+
+
+def show_help(bot, update):
+    update.message.reply_text(strings.HELP, parse_mode='Markdown')
