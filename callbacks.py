@@ -10,7 +10,7 @@ import credentials
 import strings
 
 
-locale.resetlocale(locale.LC_ALL)
+locale.setlocale(locale.LC_TIME, 'pt_BR.utf8')
 
 
 def start(bot, update):
