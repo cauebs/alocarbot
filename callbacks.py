@@ -75,7 +75,7 @@ def show_classes(bot, update, period='week'):
             return update.message.reply_text(strings.NOTHING_TOMORROW)
 
     text = '\n\n'.join(f"*[{c['course']}] {c['course_name']}*\n"
-                       f"{calendar.day_name[c['weekday'] - 2]}, "
+                       f"{calendar.day_name[c['weekday'] - 1]}, "
                        f"{c['time'].strftime('%_Hh%M')} - {c['room']}\n"
                        f"{', '.join(c['professors'])}"
                        for c in classes)
