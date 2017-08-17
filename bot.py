@@ -9,6 +9,10 @@ import credentials
 import callbacks
 
 
+locale.setlocale(locale.LC_TIME, 'pt_BR.utf8')
+logging.basicConfig(format='[%(asctime)s] %(name)s: %(message)s')
+
+
 def run():
     updater = Updater(credentials.TOKEN)
     updater.dispatcher.add_error_handler(callbacks.error_callback)
@@ -26,6 +30,4 @@ def run():
 
 
 if __name__ == '__main__':
-    locale.setlocale(locale.LC_TIME, 'pt_BR.utf8')
-    logging.basicConfig(format='[%(asctime)s] %(name)s: %(message)s')
     run()
