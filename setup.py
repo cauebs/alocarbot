@@ -1,14 +1,14 @@
-from setuptools import setup
+from setuptools import setup, find_packages
 
 
 setup(
     name='alocarbot',
-    py_modules=['alocarbot'],
+    packages=find_packages(),
     install_requires=['requests', 'beautifulsoup4', 'robobrowser',
                       'dataset', 'python-telegram-bot'],
     entry_points={
         'console_scripts': [
-            'alocarbot = alocarbot:run',
+            'alocarbot = alocarbot.__main__:run',
         ],
     },
 
