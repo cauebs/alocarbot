@@ -5,8 +5,8 @@ import logging
 
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 
-import credentials
-import callbacks
+import .credentials
+import .callbacks
 
 
 locale.setlocale(locale.LC_TIME, 'pt_BR.utf8')

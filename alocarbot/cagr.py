@@ -5,7 +5,7 @@ import requests
 from bs4 import BeautifulSoup
 from robobrowser import RoboBrowser
 
-from cache import timed_cache
+from .cache import timed_cache
 
 
 @timed_cache(60)
