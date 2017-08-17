@@ -1,5 +1,4 @@
 import calendar
-import locale
 from datetime import datetime
 
 import dataset
@@ -10,7 +9,8 @@ import credentials
 import strings
 
 
-locale.setlocale(locale.LC_TIME, 'pt_BR.utf8')
+def error_callback(bot, update, error):
+    logging.error(error)
 
 
 def start(bot, update):
