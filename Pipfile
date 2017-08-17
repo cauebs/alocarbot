@@ -1,0 +1,10 @@
+[[source]]
+url = "https://pypi.python.org/simple"
+verify_ssl = true
+
+[packages]
+bs4 = "*"
+requests = "*"
+robobrowser = "*"
+dataset = "*"
+python-telegram-bot = "*"
