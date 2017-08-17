@@ -4,9 +4,9 @@ from datetime import datetime
 import dataset
 from telegram import ReplyKeyboardMarkup, KeyboardButton
 
-import .cagr
-import .credentials
-import .strings
+from . import cagr
+from . import credentials
+from . import strings
 
 
 def error_callback(bot, update, error):
