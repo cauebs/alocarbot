@@ -5,7 +5,7 @@ import dataset
 from telegram import ReplyKeyboardMarkup, KeyboardButton
 
 from . import cagr
-from . import credentials
+from . import config
 from . import strings
 
 
@@ -34,7 +34,7 @@ def handle_message(bot, update):
         show_help(bot, update)
 
     elif text.isdigit() and len(text) in (7, 8):
-        db = dataset.connect('sqlite:///users.db')
+        db = dataset.connect(f'sqlite:///{config.DB_PATH}')
         table = db.get_table('users', primary_id='telegram_id')
         table.upsert({'telegram_id': update.message.from_user.id,
                       'cagr_id': text}, ['telegram_id'])
@@ -48,7 +48,7 @@ def handle_message(bot, update):
 
 
 def show_classes(bot, update, period='week'):
-    db = dataset.connect('sqlite:///users.db')
+    db = dataset.connect(f'sqlite:///{config.DB_PATH}')
     table = db.get_table('users', primary_id='telegram_id')
     user = table.find_one(telegram_id=update.message.from_user.id)
 
@@ -56,8 +56,8 @@ def show_classes(bot, update, period='week'):
         return update.message.reply_text(strings.NOT_FOUND)
 
     classes = cagr.fetch_user_classes(user['cagr_id'],
-                                      credentials.USERNAME,
-                                      credentials.PASSWORD)
+                                      config.USERNAME,
+                                      config.PASSWORD)
 
     if not classes:
         return update.message.reply_text(strings.NO_CLASSES)

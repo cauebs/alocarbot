@@ -5,7 +5,7 @@ import logging
 
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 
-from . import credentials
+from . import config
 from . import callbacks
 
 
@@ -14,7 +14,7 @@ logging.basicConfig(format='[%(asctime)s] %(name)s: %(message)s')
 
 
 def run():
-    updater = Updater(credentials.TOKEN)
+    updater = Updater(config.TOKEN)
     updater.dispatcher.add_error_handler(callbacks.error_callback)
 
     for handler in [CommandHandler('start', callbacks.start),

@@ -8,3 +8,4 @@ with open(Path.home() / '.config/alocarbot.json') as f:
 USERNAME = config['username']
 PASSWORD = config['password']
 TOKEN = config['token']
+DB_PATH = config['db_path']
