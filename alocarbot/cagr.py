@@ -1,5 +1,4 @@
 import datetime
-from itertools import chain
 
 import requests
 from bs4 import BeautifulSoup
@@ -33,42 +32,44 @@ def fetch_user_classes(user_id, cagr_username, cagr_password):
                for a, b, c in zip(courses, classes, semesters)
                if a.text != '-' and b.text != '-')
 
-    entries = chain.from_iterable(fetch_class_info(entry)
-                                  for entry in entries)
+    entries = fetch_classes_info(entries)
 
     return sorted(entries, key=lambda x: (x['weekday'], x['time']))
 
 
 @timed_cache(60)
-def fetch_class_info(entry):
+def fetch_classes_info(entries):
     url = 'https://cagr.sistemas.ufsc.br/modules/comunidade/cadastroTurmas/'
-    response = requests.get(url)
+    get_response = requests.get(url)
 
-    form_data = {
-        'AJAXREQUEST': '_viewRoot',
-        'formBusca': 'formBusca',
-        'javax.faces.ViewState': 'j_id1',
-        'formBusca:j_id122': 'formBusca:j_id122',
-        'formBusca:selectSemestre': entry['semester'],
-        'formBusca:codigoDisciplina': entry['course'],
-    }
+    new_entries = []
+    for entry in entries:
+        form_data = {
+            'AJAXREQUEST': '_viewRoot',
+            'formBusca': 'formBusca',
+            'javax.faces.ViewState': 'j_id1',
+            'formBusca:j_id122': 'formBusca:j_id122',
+            'formBusca:selectSemestre': entry['semester'],
+            'formBusca:codigoDisciplina': entry['course'],
+        }
 
-    response = requests.post(url, data=form_data, cookies=response.cookies)
-    soup = BeautifulSoup(response.text, 'html.parser')
+        post_response = requests.post(url, data=form_data,
+                                      cookies=get_response.cookies)
+        soup = BeautifulSoup(post_response.text, 'html.parser')
 
-    for row in soup.find_all('tr', class_='rich-table-row'):
-        cells = [cell.get_text('\n', strip=True)
-                 for cell in row.find_all('td')]
-        if cells[4] == entry['class']:
-            entries = []
-            for time in cells[-2].splitlines():
-                entry = entry.copy()
-                entry['course_name'] = cells[5]
-                entry['professors'] = cells[-1].splitlines()
-                entry.update(parse_time(time))
-                entries.append(entry)
+        for row in soup.find_all('tr', class_='rich-table-row'):
+            cells = [cell.get_text('\n', strip=True)
+                     for cell in row.find_all('td')]
+            if cells[4] == entry['class']:
+                for time in cells[-2].splitlines():
+                    entry = entry.copy()
+                    entry['course_name'] = cells[5]
+                    entry['professors'] = cells[-1].splitlines()
+                    entry.update(parse_time(time))
+                    new_entries.append(entry)
+                break
 
-            return entries
+    return new_entries
 
 
 def parse_time(time):
