@@ -71,7 +71,7 @@ def show_classes(bot, update, period='week'):
 
     elif period == 'tomorrow':
         classes = [c for c in classes
-                   if c['weekday'] == datetime.now().isoweekday() + 1]
+                   if c['weekday'] == (datetime.now().isoweekday() + 1) % 7]
         if not classes:
             return update.message.reply_text(strings.NOTHING_TOMORROW)
 
