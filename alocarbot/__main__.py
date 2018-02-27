@@ -3,10 +3,10 @@
 import locale
 import logging
 
-from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
-
-from . import config
 from . import callbacks
+from . import config
+
+from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 
 
 locale.setlocale(locale.LC_TIME, 'pt_BR.utf8')
@@ -26,7 +26,6 @@ def run():
         updater.dispatcher.add_handler(handler)
 
     updater.start_polling()
-    updater.idle()
 
 
 if __name__ == '__main__':
