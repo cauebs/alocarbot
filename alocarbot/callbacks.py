@@ -50,17 +50,10 @@ def handle_message(bot, update):
 
 
 @timed_cache(60)
-def fetch_student(telegram_id):
-    db = dataset.connect(f'sqlite:///{config.DB_PATH}')
-    table = db.get_table('users', primary_id='telegram_id')
-    user = table.find_one(telegram_id=telegram_id)
-
-    if not user:
-        raise KeyError('User not found in database')
-
+def fetch_student(student_id):
     cagr = CAGR()
     cagr.login(config.USERNAME, config.PASSWORD)
-    return cagr.student(user['cagr_id'])
+    return cagr.student(student_id)
 
 
 @timed_cache(30)
@@ -90,11 +83,14 @@ def fetch_student_classes(student):
 
 
 def show_classes(bot, update, period='week'):
-    try:
-        student = fetch_student(update.message.from_user.id)
-    except KeyError:
+    db = dataset.connect(f'sqlite:///{config.DB_PATH}')
+    table = db.get_table('users', primary_id='telegram_id')
+    user = table.find_one(telegram_id=update.message.from_user.id)
+
+    if not user:
         return update.message.reply_text(strings.NOT_FOUND)
 
+    student = fetch_student(user['id'])
     classes = fetch_student_classes(student)
 
     if not classes:
