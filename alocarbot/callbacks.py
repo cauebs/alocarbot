@@ -90,7 +90,7 @@ def show_classes(bot, update, period='week'):
     if not user:
         return update.message.reply_text(strings.NOT_FOUND)
 
-    student = fetch_student(user['id'])
+    student = fetch_student(user['cagr_id'])
     classes = fetch_student_classes(student)
 
     if not classes:
